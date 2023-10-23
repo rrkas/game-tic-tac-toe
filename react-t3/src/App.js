@@ -1,20 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Board from "./components/Board";
-import { USER_MARKER, autoPlayNextMove, cloneObject } from "./utils";
+import {
+  EMPTY_MARKER,
+  INITIAL_BOARD,
+  USER_MARKER,
+  autoPlayNextMove,
+  checkWinner,
+  cloneObject,
+} from "./utils";
 
 function App() {
-  const [data, setData] = useState([
-    [" ", " ", " "],
-    [" ", " ", " "],
-    [" ", " ", " "],
-  ]);
+  const [board, setBoard] = useState(INITIAL_BOARD);
+
+  useEffect(() => {
+    const winner = checkWinner(board);
+    if (winner !== null) {
+      alert(`You ${winner === USER_MARKER ? "WON" : "LOST"}!`);
+      setBoard(INITIAL_BOARD);
+    } else if (board.every((row) => row.every((e) => e !== EMPTY_MARKER))) {
+      alert("Its a Tie!");
+    }
+  }, [board]);
 
   function cellClickHandler(ri, ci) {
-    setData((p) => {
-      const data = cloneObject(p);
-      if (data[ri][ci] !== " ") return data;
-      data[ri][ci] = USER_MARKER;
-      return autoPlayNextMove(data);
+    setBoard((p) => {
+      var board = cloneObject(p);
+      if (board[ri][ci] !== EMPTY_MARKER) return board;
+      board[ri][ci] = USER_MARKER;
+      board = autoPlayNextMove(board);
+      return board;
     });
   }
 
@@ -23,7 +37,7 @@ function App() {
       <div className="container-fluid">
         <div className="h1 text-center mb-4">Tic-Tac-Toe</div>
         <div className="text-center">
-          <Board data={data} cellClickHandler={cellClickHandler} />
+          <Board board={board} cellClickHandler={cellClickHandler} />
         </div>
       </div>
     </div>

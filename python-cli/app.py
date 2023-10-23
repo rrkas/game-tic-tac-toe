@@ -65,15 +65,18 @@ def computer_move(board, computer_player):
 def main(stdscr):
     board = [[" " for _ in range(3)] for _ in range(3)]
     cursor_x, cursor_y = 0, 0
-    current_player = "X"
-    computer_player = "O"
+    
+    USER_MARKER = "X"
+    COMPUTER_MARKER = "O"
+
+    current_player = USER_MARKER
 
     stdscr.clear()
     stdscr.refresh()
 
     while True:
-        if current_player == computer_player:
-            computer_move(board, computer_player)
+        if current_player == COMPUTER_MARKER:
+            computer_move(board, COMPUTER_MARKER)
         else:
             print_board(stdscr, board, cursor_x, cursor_y)
             key = stdscr.getch()
@@ -96,7 +99,10 @@ def main(stdscr):
         if check_winner(board, current_player):
             print_board(stdscr, board, cursor_x, cursor_y)
             stdscr.addstr(
-                14, 0, f"Player {current_player} wins!", curses.A_BOLD
+                14, 
+                0, 
+                f"You {'LOST' if current_player == COMPUTER_MARKER else 'WON'}!", 
+                curses.A_BOLD,
             )
             stdscr.refresh()
             stdscr.getch()
@@ -108,7 +114,7 @@ def main(stdscr):
             stdscr.getch()
             break
 
-        current_player = "O" if current_player == "X" else "X"
+        current_player = COMPUTER_MARKER if current_player == USER_MARKER else USER_MARKER
 
 
 if __name__ == "__main__":

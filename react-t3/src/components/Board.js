@@ -1,8 +1,7 @@
-import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import { USER_MARKER } from "../utils";
 
-const Board = ({ data, cellClickHandler }) => {
+const Board = ({ board, cellClickHandler }) => {
   function onCellClickHandler(e, ri, ci) {
     cellClickHandler(ri, ci);
   }
@@ -11,7 +10,7 @@ const Board = ({ data, cellClickHandler }) => {
     <div className="container-fluid">
       <div className="row justify-content-center align-items-center">
         <div className="col-6 justify-content-center align-items-center">
-          {data.map((r, ri) => (
+          {board.map((r, ri) => (
             <div
               className="row justify-content-center align-items-center"
               key={uuid4()}
